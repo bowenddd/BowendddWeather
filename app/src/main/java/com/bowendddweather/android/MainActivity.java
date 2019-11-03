@@ -1,4 +1,4 @@
-package android.bowendddweather.com.bowendddweather;
+package com.bowendddweather.android;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

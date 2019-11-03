@@ -1,4 +1,4 @@
-package android.bowendddweather.com.bowendddweather;
+package com.bowendddweather.android;
 
 import org.junit.Test;
 

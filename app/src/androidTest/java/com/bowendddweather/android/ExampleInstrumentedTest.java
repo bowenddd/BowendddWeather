@@ -1,4 +1,4 @@
-package android.bowendddweather.com.bowendddweather;
+package com.bowendddweather.android;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
