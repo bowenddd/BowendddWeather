@@ -1,6 +1,7 @@
 package com.bowendddweather.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -75,7 +76,7 @@ public class ChooseAreaFragment extends Fragment {
         arrayAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(arrayAdapter);
         progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.INVISIBLE);
         return view;
 
     }
@@ -93,6 +94,13 @@ public class ChooseAreaFragment extends Fragment {
                 else if(currentLevel == LEVEL_CITY){
                     selectedCity = cityList.get(position);
                     queryCountys();
+                }
+                else if(currentLevel == LEVEL_COUNTY){
+                    String weatherId = countyList.get(position).getWeatherId();
+                    Intent intent = new Intent(getActivity(),WeatherActivity.class);
+                    intent.putExtra("weather_id",weatherId);
+                    getActivity().startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
