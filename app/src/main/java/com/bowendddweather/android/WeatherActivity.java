@@ -1,5 +1,6 @@
 package com.bowendddweather.android;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.bowendddweather.android.gson.Forecast;
 import com.bowendddweather.android.gson.Weather;
+import com.bowendddweather.android.service.AutoUpdateService;
 import com.bowendddweather.android.util.HttpUtil;
 import com.bowendddweather.android.util.Utility;
 import com.bumptech.glide.Glide;
@@ -118,6 +120,7 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 requestWeather(mWeatherId);
+                weatherLayout.fullScroll(ScrollView.FOCUS_UP);
             }
         });
         navButton.setOnClickListener(new View.OnClickListener() {
@@ -203,7 +206,8 @@ public class WeatherActivity extends AppCompatActivity {
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
         showBingPic();
-        weatherLayout.fullScroll(ScrollView.FOCUS_UP);
+        Intent intent = new Intent(this,AutoUpdateService.class);
+        startService(intent);
 
     }
 
