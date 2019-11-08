@@ -6,6 +6,9 @@ import android.util.Log;
 import com.bowendddweather.android.db.City;
 import com.bowendddweather.android.db.County;
 import com.bowendddweather.android.db.Province;
+import com.bowendddweather.android.gson.Later;
+import com.bowendddweather.android.gson.Suggestion;
+import com.bowendddweather.android.gson.Today;
 import com.bowendddweather.android.gson.Weather;
 import com.google.gson.Gson;
 
@@ -87,12 +90,22 @@ public class Utility {
      * 将返回的JSON数据解析成Weather实体类
      */
 
-    public static Weather handleWeatherResponse(String response){
+    public static <T>T handleWeatherResponse(String response,String className){
         try {
             JSONObject jsonObject = new JSONObject(response);
-            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather6");
             String weathrtContent = jsonArray.getJSONObject(0).toString();
-            return new Gson().fromJson(weathrtContent,Weather.class);
+            Log.d("test",className);
+            Log.d("test",weathrtContent);
+            if(className.equals("now")){
+                return (T)new Gson().fromJson(weathrtContent,Today.class);
+            }
+            else if(className.equals("forecast")){
+                return (T)new Gson().fromJson(weathrtContent,Later.class);
+            }
+            else if(className.equals("lifestyle")){
+                return (T)new Gson().fromJson(weathrtContent,Suggestion.class);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

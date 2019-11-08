@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Suggestion {
+public class Later {
     @SerializedName("basic")
     public Basic basic;
 
@@ -19,15 +19,8 @@ public class Suggestion {
         @SerializedName("utc")
         public String updateTime;
     }
-    @SerializedName("lifestyle")
-    public List<Life> lifestyle;
-    public class Life{
-        @SerializedName("brf")
-        public String brf;
 
-        @SerializedName("txt")
-        public String info;
-
-    }
+    @SerializedName("daily_forecast")
+    public List<Forecast> forecasts;
 
 }

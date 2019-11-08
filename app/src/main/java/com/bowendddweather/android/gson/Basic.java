@@ -3,17 +3,10 @@ package com.bowendddweather.android.gson;
 import com.google.gson.annotations.SerializedName;
 
 public class Basic {
-    @SerializedName("city")
+    @SerializedName("location")
     public String cityName;
 
-    @SerializedName("id")
+    @SerializedName("cid")
     public String weatherId;
 
-    @SerializedName("update")
-    public Update update;
-
-    public class Update{
-        @SerializedName("loc")
-        public String updateTime;
-    }
 }

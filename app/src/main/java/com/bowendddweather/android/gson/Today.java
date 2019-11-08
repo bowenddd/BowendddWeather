@@ -2,9 +2,7 @@ package com.bowendddweather.android.gson;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class Suggestion {
+public class Today {
     @SerializedName("basic")
     public Basic basic;
 
@@ -13,21 +11,14 @@ public class Suggestion {
 
 
     @SerializedName("update")
-    public Today.Update update;
+    public Update update;
 
     public class Update{
         @SerializedName("utc")
         public String updateTime;
     }
-    @SerializedName("lifestyle")
-    public List<Life> lifestyle;
-    public class Life{
-        @SerializedName("brf")
-        public String brf;
 
-        @SerializedName("txt")
-        public String info;
-
-    }
+    @SerializedName("now")
+    public Now now;
 
 }
