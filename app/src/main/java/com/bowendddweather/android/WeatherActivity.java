@@ -81,6 +81,8 @@ public class WeatherActivity extends AppCompatActivity {
 
     private Button navButton;
 
+    public static final List<String> types = Arrays.asList("now","forecast","lifestyle");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,9 +105,27 @@ public class WeatherActivity extends AppCompatActivity {
         swipeRefresh = findViewById(R.id.swipe_refresh);
         navButton = findViewById(R.id.nav_button);
         drawerLayout = findViewById(R.id.drawer_layout);
-        mWeatherId = getIntent().getStringExtra("weather_id");
-        weatherLayout.setVisibility(View.INVISIBLE);
-        requestWeather(mWeatherId);
+        List<String> weatherMessages = new ArrayList<>();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this);
+        boolean find = true;
+        for(String type:types){
+            String message  = prefs.getString(type,null);
+            if(message == null){
+                find = false;
+                break;
+            }
+            weatherMessages.add(message);
+        }
+        if(find){
+            Weather weather = getWeatherMessage(weatherMessages,types);
+            mWeatherId = weather.today.basic.weatherId;
+            showWeatherInfo(weather);
+        }
+        else{
+            mWeatherId = getIntent().getStringExtra("weather_id");
+            weatherLayout.setVisibility(View.INVISIBLE);
+            requestWeather(mWeatherId);
+        }
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -124,7 +144,6 @@ public class WeatherActivity extends AppCompatActivity {
     public void requestWeather(final String weatherId){
         String key = "b991f7b3b0234c82bc449d7d28383179";
         final List<String> list = new ArrayList<>();
-        final List<String> types = Arrays.asList("now","forecast","lifestyle");
         final List<String> mtypes = new ArrayList<>();
         for(final String type:types) {
             String weatherUrl = "https://free-api.heweather.net/s6/weather/"+type+"?location=" + weatherId + "&key=" + key;
@@ -143,7 +162,9 @@ public class WeatherActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String responseText = response.body().string();
-                    Log.d("test","response");
+                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
+                    editor.putString(type,responseText);
+                    editor.apply();
                     list.add(responseText);
                     mtypes.add(type);
                     if(list.size()==3) {
@@ -242,7 +263,7 @@ public class WeatherActivity extends AppCompatActivity {
         });
 
     }
-    private Weather getWeatherMessage(List<String>list,List<String>types){
+    public static Weather getWeatherMessage(List<String>list,List<String>types){
         Weather weather = new Weather();
         for (int i=0;i<types.size();i++){
             if(types.get(i).equals("now")){

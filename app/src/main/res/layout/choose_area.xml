@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
 >
     <RelativeLayout
+        android:id="@+id/choose_title_layout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="60dp"
+        android:background="#696969"
         >
         <TextView
             android:id="@+id/title_text"
@@ -31,8 +32,8 @@
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        android:background="#2F4F4F"
+        android:layout_marginTop="50dp"
+        android:background="#828282"
         ></ListView>
     <ProgressBar
         android:id="@+id/progress_bar"

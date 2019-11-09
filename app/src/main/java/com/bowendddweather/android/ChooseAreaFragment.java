@@ -2,6 +2,8 @@ package com.bowendddweather.android;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +69,9 @@ public class ChooseAreaFragment extends Fragment {
 
     private int currentLevel;
 
+    private RelativeLayout chooseAreaTitle;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,10 +79,12 @@ public class ChooseAreaFragment extends Fragment {
         titleText = (TextView)view.findViewById(R.id.title_text);
         backButton = (Button)view.findViewById(R.id.back_button);
         listView = (ListView)view.findViewById(R.id.list_view);
+        chooseAreaTitle = (RelativeLayout)view.findViewById(R.id.choose_title_layout);
         arrayAdapter = new ArrayAdapter<>(getContext(),R.layout.my_list_item,dataList);
         listView.setAdapter(arrayAdapter);
         progressBar = (ProgressBar)view.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.INVISIBLE);
+
         return view;
 
     }
@@ -84,6 +92,10 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if(getActivity() instanceof WeatherActivity){
+            listView.getBackground().setAlpha(50);
+            chooseAreaTitle.getBackground().setAlpha(100);
+        }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -109,6 +121,9 @@ public class ChooseAreaFragment extends Fragment {
                         activity.swipeRefresh.setRefreshing(true);
                         activity.requestWeather(weatherId);
                     }
+                    currentLevel = LEVEL_PROVINCE;
+                    queryProvinces();
+
                 }
             }
         });
@@ -129,7 +144,6 @@ public class ChooseAreaFragment extends Fragment {
 
     private void queryProvinces(){
         titleText.setText("中国");
-        Log.d("test","Iamin");
         backButton.setVisibility(View.GONE);
         provinceList = DataSupport.findAll(Province.class);
         if(provinceList.size()>0){
